@@ -42,7 +42,7 @@ class CategoryRequest extends FormRequest
         return [
             'name' => 'required|string|max:100',
             'picture_url' => 'nullable|url',
-            'slug' => 'nullable|string|unique:posts',
+            'slug' => 'nullable|string|unique:categories',
             'meta_title' => 'nullable|string|max:100',
             'meta_description' => 'nullable|string',
         ];

@@ -22,7 +22,9 @@ Route::group(['prefix' => 'user'], function() {
 Route::group(['prefix' => 'category'], function() {
     Route::get('/', [\App\Http\Controllers\CategoryController::class, 'index']);
     Route::post('/', [\App\Http\Controllers\CategoryController::class, 'create']);
-    Route::post('{slug}', [\App\Http\Controllers\CategoryController::class, 'show']);
+    Route::get('{slug}', [\App\Http\Controllers\CategoryController::class, 'show']);
+    Route::patch('{slug}', [\App\Http\Controllers\CategoryController::class, 'update']);
+    Route::delete('{slug}', [\App\Http\Controllers\CategoryController::class, 'delete']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

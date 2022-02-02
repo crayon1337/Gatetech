@@ -9,4 +9,10 @@ interface CategoryInterface
      * @return mixed
      */
     public function findBySlug(string $slug);
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function isSlugExists(string $name);
 }

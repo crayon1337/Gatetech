@@ -28,7 +28,7 @@ class CategoryController extends Controller
      */
     public function index(): ?LengthAwarePaginator
     {
-        return $this->categoryRepository->all(20, 'isAvailable');
+        return $this->categoryRepository->all(20, 'Isavailable');
     }
 
     /**
@@ -41,8 +41,14 @@ class CategoryController extends Controller
         $data = $request->validated();
 
         // Assign auto slug if the request does not include a slug.
-        if(!isset($data['slug']))
+        // Also make sure the slug does not exist in the database.
+        if(!isset($data['slug'])) {
+
+            if($this->categoryRepository->isSlugExists($data['name']))
+                return response()->json(['message' => 'The slug already exists in the database'], 422);
+
             $data['slug'] = Str::slug($data['name']);
+        }
 
         // Create the category
         $category = $this->categoryRepository->create($data);
@@ -61,5 +67,45 @@ class CategoryController extends Controller
     public function show($slug): JsonResponse
     {
         return response()->json($this->categoryRepository->findBySlug($slug));
+    }
+
+    /**
+     * @param CategoryRequest $request
+     * @param $slug
+     * @return JsonResponse
+     */
+    public function update(CategoryRequest $request, $slug): JsonResponse
+    {
+        $category = $this->categoryRepository->findBySlug($slug);
+
+        // Validate the data
+        $data = $request->validated();
+
+        // Update the category
+        $category->update($data);
+
+        // Return successful message and the category
+        return response()->json([
+            'message'  => 'Category has been updated',
+            'category' => $category,
+        ]);
+    }
+
+    /**
+     * @param $slug
+     * @return JsonResponse
+     */
+    public function delete($slug): JsonResponse
+    {
+        // Get the category by it's slug
+        $category = $this->categoryRepository->findBySlug($slug);
+
+        // Delete the category
+        $category->delete();
+
+        // Return successfull message
+        return response()->json([
+            'message' => 'Category has been deleted successfully...',
+        ]);
     }
 }
