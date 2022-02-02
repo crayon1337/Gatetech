@@ -16,6 +16,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'user'], function() {
    Route::post('register', [\App\Http\Controllers\UserController::class, 'register']);
+   Route::post('login', [\App\Http\Controllers\UserController::class, 'login']);
+});
+
+Route::group(['prefix' => 'category'], function() {
+    Route::get('/', [\App\Http\Controllers\CategoryController::class, 'index']);
+    Route::post('/', [\App\Http\Controllers\CategoryController::class, 'create']);
+    Route::post('{slug}', [\App\Http\Controllers\CategoryController::class, 'show']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

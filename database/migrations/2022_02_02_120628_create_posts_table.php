@@ -19,9 +19,12 @@ class CreatePostsTable extends Migration
             $table->text('content');
             $table->string('picture_url');
             $table->text('tags');
+            $table->unsignedBigInteger('category_id');
             $table->string('slug')->unique();
             $table->string('meta_title');
             $table->text('meta_description');
+
+            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->timestamps();
         });
     }
