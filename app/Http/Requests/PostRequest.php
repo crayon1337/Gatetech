@@ -15,7 +15,7 @@ class PostRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -37,10 +37,17 @@ class PostRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-
+            'title' => 'required|string|max:130',
+            'content' => 'required|string',
+            'picture_url' => 'nullable|url',
+            'tags' => 'nullable|string',
+            'category_id' => 'required|numeric|exists:categories,id',
+            'slug' => 'nullable|string|unique:posts',
+            'meta_title' => 'nullable|string',
+            'meta_description' => 'nullable|string',
         ];
     }
 }

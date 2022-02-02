@@ -44,6 +44,7 @@ class CategoryController extends Controller
         // Also make sure the slug does not exist in the database.
         if(!isset($data['slug'])) {
 
+            // If it already exists the name have to be changed. Or include the slug with different one in the request.
             if($this->categoryRepository->isSlugExists($data['name']))
                 return response()->json(['message' => 'The slug already exists in the database'], 422);
 
@@ -76,6 +77,7 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, $slug): JsonResponse
     {
+        // Get the category by it's slug
         $category = $this->categoryRepository->findBySlug($slug);
 
         // Validate the data

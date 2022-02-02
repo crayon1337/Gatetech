@@ -27,6 +27,14 @@ Route::group(['prefix' => 'category'], function() {
     Route::delete('{slug}', [\App\Http\Controllers\CategoryController::class, 'delete']);
 });
 
+Route::group(['prefix' => 'post'], function() {
+    Route::get('/', [\App\Http\Controllers\PostController::class, 'index']);
+    Route::post('/', [\App\Http\Controllers\PostController::class, 'create']);
+    Route::get('{slug}', [\App\Http\Controllers\PostController::class, 'show']);
+    Route::patch('{slug}', [\App\Http\Controllers\PostController::class, 'update']);
+    Route::delete('{slug}', [\App\Http\Controllers\PostController::class, 'delete']);
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

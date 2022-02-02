@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repository\Category;
+namespace App\Repository\Post;
 
-// I know I could've added this to the base interface in such a project as long as I use that here and in PostInterface. But I just wanted to demonstrate how I use
+// I know I could've added this to the base interface in such a project as long as I use that here and in CategoryInterface. But I just wanted to demonstrate how I use
 // Repository design pattern in large-scale websites
 
-interface CategoryInterface
+interface PostInterface
 {
     /**
      * @param $slug

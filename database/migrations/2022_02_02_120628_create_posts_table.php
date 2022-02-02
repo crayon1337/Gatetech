@@ -23,6 +23,7 @@ class CreatePostsTable extends Migration
             $table->string('slug')->unique();
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
+            $table->boolean('isAvailable')->default(1);
 
             $table->foreign('category_id')->references('id')->on('categories')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->timestamps();
