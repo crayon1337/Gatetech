@@ -17,12 +17,12 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->string('picture_url');
-            $table->text('tags');
+            $table->string('picture_url')->nullable();
+            $table->text('tags')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->string('slug')->unique();
-            $table->string('meta_title');
-            $table->text('meta_description');
+            $table->string('meta_title')->nullable();
+            $table->text('meta_description')->nullable();
 
             $table->foreign('category_id')->references('id')->on('categories')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->timestamps();

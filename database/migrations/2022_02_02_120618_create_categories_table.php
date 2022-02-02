@@ -16,11 +16,11 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('picture_url');
-            $table->boolean('isAvailable');
+            $table->string('picture_url')->nullable();
+            $table->boolean('isAvailable')->default(1);
             $table->string('slug')->unique();
-            $table->string('meta_title');
-            $table->text('meta_description');
+            $table->string('meta_title')->nullable();
+            $table->text('meta_description')->nullable();
             $table->timestamps();
         });
     }

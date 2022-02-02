@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use App\Repository\User\UserRepository;
@@ -35,6 +36,14 @@ class UserController extends Controller
         $user = $this->userRepository->create($data);
 
         // Return user data to the endpoint
-        return response()->json($user);
+        return response()->json([
+            'message' => 'You have been registered successfully',
+            'user'    => $user
+        ]);
+    }
+
+    public function login(LoginRequest $request)
+    {
+
     }
 }

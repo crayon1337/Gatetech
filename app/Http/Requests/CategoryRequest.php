@@ -8,7 +8,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 
-class RegisterRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -41,9 +41,10 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-            'phone_number' => 'nullable|numeric',
+            'picture_url' => 'nullable|url',
+            'slug' => 'nullable|string|unique:posts',
+            'meta_title' => 'nullable|string|max:100',
+            'meta_description' => 'nullable|string',
         ];
     }
 }

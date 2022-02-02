@@ -15,4 +15,15 @@ class CategoryRepository extends BaseRepository implements CategoryInterface
     {
         parent::__construct($model);
     }
+
+    /**
+     * @param string $slug
+     * @return mixed|void
+     */
+    public function findBySlug(string $slug)
+    {
+        $this->model::whereSlug($slug)
+                ->whereIsAvailable(1)
+                ->firstOrFail();
+    }
 }
