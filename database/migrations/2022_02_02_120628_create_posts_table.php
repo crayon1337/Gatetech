@@ -19,6 +19,7 @@ class CreatePostsTable extends Migration
             $table->text('content');
             $table->string('picture_url')->nullable();
             $table->text('tags')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category_id');
             $table->string('slug')->unique();
             $table->string('meta_title')->nullable();
@@ -26,6 +27,7 @@ class CreatePostsTable extends Migration
             $table->boolean('isAvailable')->default(1);
 
             $table->foreign('category_id')->references('id')->on('categories')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->timestamps();
         });
     }
