@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostRequest;
 use App\Repository\Post\PostRepository;
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
@@ -53,6 +54,9 @@ class PostController extends Controller
             $data['slug'] = Str::slug($data['title']);
         }
 
+        // Assign the user ID
+        $data['user_id'] = $request->user()->id;
+
         // Create the post
         $post = $this->postRepository->create($data);
 
@@ -76,11 +80,15 @@ class PostController extends Controller
      * @param PostRequest $request
      * @param $slug
      * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function update(PostRequest $request, $slug): JsonResponse
     {
         // Get post by it's slug
         $post = $this->postRepository->findBySlug($slug);
+
+        // Authorize the request
+        $this->authorize('update', $post);
 
         // Validate the request
         $data = $request->validated();
@@ -98,11 +106,15 @@ class PostController extends Controller
     /**
      * @param $slug
      * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function delete($slug): JsonResponse
     {
         // Get the post by it's slug
         $post = $this->postRepository->findBySlug($slug);
+
+        // Authorize the request
+        $this->authorize('delete', $post);
 
         // Delete the post
         $post->delete();
