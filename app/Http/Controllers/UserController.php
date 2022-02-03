@@ -7,6 +7,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use App\Repository\User\UserRepository;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -68,5 +69,24 @@ class UserController extends Controller
             return response()->json([
                 'message' => 'Something went wrong. Please double check your email & password'
             ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function makeAdmin(Request $request, $id): JsonResponse
+    {
+        if(!$request->user()->isAdmin)
+            return response()->json(['message' => 'You have to be an administrator to perform this action'], 403);
+
+        $user = $this->userRepository->findOrFail($id);
+
+        $user->update([
+            'isAdmin' => true,
+        ]);
+
+        return response()->json(['message' => 'Successfully changed the role of the user to be an administrator']);
     }
 }
