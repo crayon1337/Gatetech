@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
+use App\Models\Category;
 use App\Repository\Category\CategoryRepository;
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
@@ -34,9 +36,13 @@ class CategoryController extends Controller
     /**
      * @param CategoryRequest $request
      * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function create(CategoryRequest $request): JsonResponse
     {
+        // Authorize the request.
+        $this->authorize('manage', Category::class);
+
         // Validate the data
         $data = $request->validated();
 
@@ -74,9 +80,13 @@ class CategoryController extends Controller
      * @param CategoryRequest $request
      * @param $slug
      * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function update(CategoryRequest $request, $slug): JsonResponse
     {
+        // Authorize the request
+        $this->authorize('manage', Category::class);
+
         // Get the category by it's slug
         $category = $this->categoryRepository->findBySlug($slug);
 
@@ -96,16 +106,20 @@ class CategoryController extends Controller
     /**
      * @param $slug
      * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function delete($slug): JsonResponse
     {
+        // Authorize the request
+        $this->authorize('manage', Category::class);
+
         // Get the category by it's slug
         $category = $this->categoryRepository->findBySlug($slug);
 
         // Delete the category
         $category->delete();
 
-        // Return successfull message
+        // Return successful message
         return response()->json([
             'message' => 'Category has been deleted successfully...',
         ]);

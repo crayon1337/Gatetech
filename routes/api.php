@@ -16,25 +16,27 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'user'], function() {
    Route::post('register', [\App\Http\Controllers\UserController::class, 'register']);
-   Route::post('login', [\App\Http\Controllers\UserController::class, 'login']);
+   Route::post('login', [\App\Http\Controllers\UserController::class, 'login'])->name('login');
 });
 
 Route::group(['prefix' => 'category'], function() {
     Route::get('/', [\App\Http\Controllers\CategoryController::class, 'index']);
-    Route::post('/', [\App\Http\Controllers\CategoryController::class, 'create']);
     Route::get('{slug}', [\App\Http\Controllers\CategoryController::class, 'show']);
-    Route::patch('{slug}', [\App\Http\Controllers\CategoryController::class, 'update']);
-    Route::delete('{slug}', [\App\Http\Controllers\CategoryController::class, 'delete']);
+
+    Route::group(['middleware' => 'auth:sanctum'], function() {
+        Route::post('/', [\App\Http\Controllers\CategoryController::class, 'create']);
+        Route::patch('{slug}', [\App\Http\Controllers\CategoryController::class, 'update']);
+        Route::delete('{slug}', [\App\Http\Controllers\CategoryController::class, 'delete']);
+    });
 });
 
 Route::group(['prefix' => 'post'], function() {
     Route::get('/', [\App\Http\Controllers\PostController::class, 'index']);
-    Route::post('/', [\App\Http\Controllers\PostController::class, 'create']);
     Route::get('{slug}', [\App\Http\Controllers\PostController::class, 'show']);
-    Route::patch('{slug}', [\App\Http\Controllers\PostController::class, 'update']);
-    Route::delete('{slug}', [\App\Http\Controllers\PostController::class, 'delete']);
-});
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::group(['middleware' => 'auth:sanctum'], function() {
+        Route::post('/', [\App\Http\Controllers\PostController::class, 'create']);
+        Route::patch('{slug}', [\App\Http\Controllers\PostController::class, 'update']);
+        Route::delete('{slug}', [\App\Http\Controllers\PostController::class, 'delete']);
+    });
 });

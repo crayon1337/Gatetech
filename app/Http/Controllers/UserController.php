@@ -54,7 +54,6 @@ class UserController extends Controller
         $data = $request->validated();
 
         // Attempt to login
-
         if(Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
             $auth = Auth::user();
 
@@ -62,12 +61,12 @@ class UserController extends Controller
 
             return response()->json([
                 'message' => 'Welcome back!',
-                'token' => $token
+                'tokenType' => 'Bearer',
+                'token' => $token,
             ]);
-        } else {
+        } else
             return response()->json([
                 'message' => 'Something went wrong. Please double check your email & password'
             ]);
-        }
     }
 }
