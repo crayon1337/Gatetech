@@ -16,8 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'user'], function() {
    Route::post('register', [\App\Http\Controllers\UserController::class, 'register']);
-   Route::post('login', [\App\Http\Controllers\UserController::class, 'login']);
+   Route::post('login', [\App\Http\Controllers\UserController::class, 'login'])->name('login');
    Route::post('{id}/makeAdmin', [\App\Http\Controllers\UserController::class, 'makeAdmin'])->middleware('auth:sanctum');
+   Route::post('logout', [\App\Http\Controllers\UserController::class, 'logout'])->middleware('auth:sanctum');
 });
 
 Route::group(['prefix' => 'category'], function() {

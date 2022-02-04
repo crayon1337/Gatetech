@@ -68,7 +68,7 @@ class UserController extends Controller
         } else
             return response()->json([
                 'message' => 'Something went wrong. Please double check your email & password'
-            ]);
+            ], 401);
     }
 
     /**
@@ -88,5 +88,21 @@ class UserController extends Controller
         ]);
 
         return response()->json(['message' => 'Successfully changed the role of the user to be an administrator']);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function logout(Request $request): JsonResponse
+    {
+        // Get the user from the request
+        $user = $request->user();
+
+        // Delete user tokens
+        $user->tokens()->delete();
+
+        // Return successful message with status code: 200
+        return response()->json(['message' => 'Successfully logged out! See you later...']);
     }
 }
