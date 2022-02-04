@@ -4,6 +4,7 @@ namespace App\Repository\Post;
 
 use App\Models\Post;
 use App\Repository\Eloquent\BaseRepository;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
 class PostRepository extends BaseRepository implements PostInterface
@@ -24,6 +25,7 @@ class PostRepository extends BaseRepository implements PostInterface
     public function findBySlug(string $slug)
     {
         return $this->model::whereSlug($slug)
+            ->with('user')
             ->whereIsavailable(true)
             ->firstOrFail();
     }

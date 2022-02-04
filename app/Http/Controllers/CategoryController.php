@@ -73,7 +73,7 @@ class CategoryController extends Controller
      */
     public function show($slug): JsonResponse
     {
-        return response()->json($this->categoryRepository->findBySlug($slug));
+        return response()->json(['category' => $this->categoryRepository->findBySlug($slug), 'posts' => $this->categoryRepository->getPosts($slug)]);
     }
 
     /**

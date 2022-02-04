@@ -36,4 +36,15 @@ class CategoryRepository extends BaseRepository implements CategoryInterface
     {
         return $this->model::whereSlug(Str::slug($name))->exists();
     }
+
+    /**
+     * @param string $slug
+     * @return mixed
+     */
+    public function getPosts(string $slug)
+    {
+        $category = $this->findBySlug($slug);
+
+        return $category->posts()->with('user')->paginate();
+    }
 }
