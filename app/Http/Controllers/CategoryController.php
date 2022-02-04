@@ -78,17 +78,17 @@ class CategoryController extends Controller
 
     /**
      * @param CategoryRequest $request
-     * @param $slug
+     * @param $id
      * @return JsonResponse
      * @throws AuthorizationException
      */
-    public function update(CategoryRequest $request, $slug): JsonResponse
+    public function update(CategoryRequest $request, $id): JsonResponse
     {
         // Authorize the request
         $this->authorize('manage', Category::class);
 
-        // Get the category by it's slug
-        $category = $this->categoryRepository->findBySlug($slug);
+        // Get the category by it's ID
+        $category = $this->categoryRepository->findOrFail($id);
 
         // Validate the data
         $data = $request->validated();

@@ -7,6 +7,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use App\Repository\User\UserRepository;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -78,16 +79,20 @@ class UserController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function makeAdmin(Request $request, $id): JsonResponse
+    public function changeRole(Request $request, $id): JsonResponse
     {
         if(!$request->user()->isAdmin)
             return response()->json(['message' => 'You have to be an administrator to perform this action'], 403);
 
         $user = $this->userRepository->findOrFail($id);
 
-        $user->update([
-            'isAdmin' => true,
-        ]);
+        // Toggle the role.
+        if($user->isAdmin)
+            $user->isAdmin = false;
+        else
+            $user->isAdmin = true;
+
+        $user->save();
 
         return response()->json(['message' => 'Successfully changed the role of the user to be an administrator']);
     }
@@ -145,5 +150,33 @@ class UserController extends Controller
     public function refreshUserInfo(Request $request)
     {
         return $request->user();
+    }
+
+    /**
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function users(): JsonResponse
+    {
+        return response()->json($this->userRepository->all(20));
+    }
+
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function delete($id): JsonResponse
+    {
+        // Get the user
+        $user = $this->userRepository->findOrFail($id);
+
+        // Delete user tokens
+        $user->tokens()->delete();
+
+        // Delete the user
+        $user->delete();
+
+        // Return successful message
+        return response()->json(['message' => 'User has been deleted']);
     }
 }

@@ -17,10 +17,14 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'user'], function() {
    Route::post('register', [\App\Http\Controllers\UserController::class, 'register']);
    Route::post('login', [\App\Http\Controllers\UserController::class, 'login'])->name('login');
-   Route::post('{id}/makeAdmin', [\App\Http\Controllers\UserController::class, 'makeAdmin'])->middleware('auth:sanctum');
-   Route::post('logout', [\App\Http\Controllers\UserController::class, 'logout'])->middleware('auth:sanctum');
-   Route::post('/{id}', [\App\Http\Controllers\UserController::class, 'updateUserInfo'])->middleware('auth:sanctum');
-   Route::get('/', [\App\Http\Controllers\UserController::class, 'refreshUserInfo'])->middleware('auth:sanctum');
+
+    Route::group(['middleware' => 'auth:sanctum'], function() {
+        Route::post('{id}/makeAdmin', [\App\Http\Controllers\UserController::class, 'changeRole']);
+        Route::post('logout', [\App\Http\Controllers\UserController::class, 'logout']);
+        Route::post('/{id}', [\App\Http\Controllers\UserController::class, 'updateUserInfo']);
+        Route::get('/', [\App\Http\Controllers\UserController::class, 'refreshUserInfo']);
+        Route::delete('{id}/delete', [\App\Http\Controllers\UserController::class, 'delete']);
+    });
 });
 
 Route::group(['prefix' => 'category'], function() {
@@ -29,7 +33,7 @@ Route::group(['prefix' => 'category'], function() {
 
     Route::group(['middleware' => 'auth:sanctum'], function() {
         Route::post('/', [\App\Http\Controllers\CategoryController::class, 'create']);
-        Route::patch('{slug}', [\App\Http\Controllers\CategoryController::class, 'update']);
+        Route::patch('{id}', [\App\Http\Controllers\CategoryController::class, 'update']);
         Route::delete('{slug}', [\App\Http\Controllers\CategoryController::class, 'delete']);
     });
 });
@@ -44,3 +48,6 @@ Route::group(['prefix' => 'post'], function() {
         Route::delete('{slug}', [\App\Http\Controllers\PostController::class, 'delete']);
     });
 });
+
+
+Route::get('/users', [\App\Http\Controllers\UserController::class, 'users'])->middleware('auth:sanctum');

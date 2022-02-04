@@ -44,11 +44,11 @@ class BaseRepository implements EloquentRepositoryInterface
 
     /**
      * @param int $maxResults
-     * @param string $statusColumn
+     * @param string|null $statusColumn
      * @return LengthAwarePaginator|null
      * @throws Exception
      */
-    public function all(int $maxResults, string $statusColumn): ?LengthAwarePaginator
+    public function all(int $maxResults, string $statusColumn = null): ?LengthAwarePaginator
     {
         try {
             $data = $this->model;

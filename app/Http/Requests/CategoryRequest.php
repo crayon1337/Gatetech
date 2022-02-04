@@ -6,6 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class CategoryRequest extends FormRequest
@@ -42,7 +43,10 @@ class CategoryRequest extends FormRequest
         return [
             'name' => 'required|string|max:100',
             'picture_url' => 'nullable|url',
-            'slug' => 'nullable|string|unique:categories',
+            'slug' => [
+                'nullable',
+                Rule::unique('categories', 'slug')->ignore($this->id)
+            ],
             'meta_title' => 'nullable|string|max:100',
             'meta_description' => 'nullable|string',
         ];
