@@ -19,6 +19,8 @@ Route::group(['prefix' => 'user'], function() {
    Route::post('login', [\App\Http\Controllers\UserController::class, 'login'])->name('login');
    Route::post('{id}/makeAdmin', [\App\Http\Controllers\UserController::class, 'makeAdmin'])->middleware('auth:sanctum');
    Route::post('logout', [\App\Http\Controllers\UserController::class, 'logout'])->middleware('auth:sanctum');
+   Route::post('/{id}', [\App\Http\Controllers\UserController::class, 'updateUserInfo'])->middleware('auth:sanctum');
+   Route::get('/', [\App\Http\Controllers\UserController::class, 'refreshUserInfo'])->middleware('auth:sanctum');
 });
 
 Route::group(['prefix' => 'category'], function() {

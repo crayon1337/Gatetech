@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use App\Repository\User\UserRepository;
 use Illuminate\Http\JsonResponse;
@@ -64,6 +65,7 @@ class UserController extends Controller
                 'message' => 'Welcome back!',
                 'tokenType' => 'Bearer',
                 'token' => $token,
+                'user' => $auth,
             ]);
         } else
             return response()->json([
@@ -104,5 +106,44 @@ class UserController extends Controller
 
         // Return successful message with status code: 200
         return response()->json(['message' => 'Successfully logged out! See you later...']);
+    }
+
+    /**
+     * @param UserUpdateRequest $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function updateUserInfo(UserUpdateRequest $request, $id): JsonResponse
+    {
+        // Validate the data
+        $data = $request->validated();
+
+        // Find the user to edit
+        $user = $this->userRepository->findOrFail($id);
+
+        // Update user information data
+        $user->update([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'phone_number' => $data['phone_number'],
+        ]);
+
+        // If the password has been set then update it.
+        if(isset($data['password'])) {
+            $user->password = bcrypt($data['password']);
+            $user->save();
+        }
+
+        // Return successful response
+        return response()->json(['message' => 'Your profile has been updated...']);
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function refreshUserInfo(Request $request)
+    {
+        return $request->user();
     }
 }
