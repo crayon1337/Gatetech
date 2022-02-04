@@ -45,7 +45,7 @@ class PostRequest extends FormRequest
             'picture_url' => 'nullable|url',
             'tags' => 'nullable|string',
             'category_id' => 'required|numeric|exists:categories,id',
-            'slug' => 'nullable|string|unique:posts',
+            'slug' => 'nullable|string|unique:posts,slug,' . $this->id,
             'meta_title' => 'nullable|string',
             'meta_description' => 'nullable|string',
         ];

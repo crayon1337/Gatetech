@@ -78,14 +78,14 @@ class PostController extends Controller
 
     /**
      * @param PostRequest $request
-     * @param $slug
+     * @param $id
      * @return JsonResponse
      * @throws AuthorizationException
      */
-    public function update(PostRequest $request, $slug): JsonResponse
+    public function update(PostRequest $request, $id): JsonResponse
     {
-        // Get post by it's slug
-        $post = $this->postRepository->findBySlug($slug);
+        // Get post by it's ID
+        $post = $this->postRepository->findOrFail($id);
 
         // Authorize the request
         $this->authorize('update', $post);

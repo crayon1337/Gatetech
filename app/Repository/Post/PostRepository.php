@@ -38,4 +38,20 @@ class PostRepository extends BaseRepository implements PostInterface
     {
         return $this->model::whereSlug(Str::slug($name))->exists();
     }
+
+    public function all(int $maxResults, string $statusColumn = null): ?LengthAwarePaginator
+    {
+        try {
+            $data = $this->model::with('category', 'user');
+
+            if(isset($statusColumn))
+                $data->where($statusColumn, true);
+
+            return $data->paginate($maxResults);
+
+        } catch(Exception $e) {
+            $message = $e->getMessage();
+            throw new Exception('Could not fetch the database. \n Reason:' . $message, 500);
+        }
+    }
 }

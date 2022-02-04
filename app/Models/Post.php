@@ -20,13 +20,6 @@ class Post extends Model
     ];
 
     /**
-     * @var string[]
-     */
-    protected $casts = [
-        'tags' => 'array',
-    ];
-
-    /**
      * @return BelongsTo
      */
     public function category(): BelongsTo

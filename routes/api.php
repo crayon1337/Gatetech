@@ -44,7 +44,7 @@ Route::group(['prefix' => 'post'], function() {
 
     Route::group(['middleware' => 'auth:sanctum'], function() {
         Route::post('/', [\App\Http\Controllers\PostController::class, 'create']);
-        Route::patch('{slug}', [\App\Http\Controllers\PostController::class, 'update']);
+        Route::patch('{id}', [\App\Http\Controllers\PostController::class, 'update']);
         Route::delete('{slug}', [\App\Http\Controllers\PostController::class, 'delete']);
     });
 });
