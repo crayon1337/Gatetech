@@ -43,6 +43,12 @@ Sixth, let's run the server
 
 Voila! Now we are ready to consume the API
 
+## Routes
+![Routes picture](https://i.imgur.com/TIIjLyy.png)
+
+## Postman Collection file
+[Transfer.sh Link](https://transfer.sh/IQsjCa/Gatetech.postman_collection.json) to download the postman collection file
+
 ## API Consumption
 I have created a VueJS application to consume this API with simple design. Find it [here](http://github.com/crayon1337/gatetechvuejs)
 
